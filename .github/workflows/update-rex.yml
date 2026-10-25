@@ -1,0 +1,57 @@
+name: Update Rex
+
+on:
+  schedule:
+    - cron: "23 2 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/update-rex.yml
+      - scripts/update_rex.py
+      - tests/test_update_rex.py
+
+permissions:
+  contents: read
+
+concurrency:
+  group: update-rex
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.repository == 'chungweileong94/homebrew-tap' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Check out main
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: main
+      - name: Test updater
+        run: python3 -m unittest discover -s tests -v
+      - name: Check latest preview
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          if [ "$EVENT_NAME" = schedule ]; then
+            python3 scripts/update_rex.py
+          else
+            python3 scripts/update_rex.py --verify-current
+          fi
+      - name: Validate cask syntax
+        run: ruby -c Casks/rex.rb
+      - name: Commit version update
+        run: |
+          if git diff --quiet -- Casks/rex.rb; then
+            echo "No cask changes to commit."
+            exit 0
+          fi
+          git diff --check
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- Casks/rex.rb
+          git commit -m 'Update Rex preview'
+          git push origin HEAD:main
