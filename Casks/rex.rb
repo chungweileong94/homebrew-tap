@@ -16,4 +16,9 @@ cask "rex" do
   depends_on macos: :sequoia
 
   app "Rex Beta.app"
+
+  zap trash: [
+    "~/Library/Application Support/com.superlogical.rex",
+    "~/Library/Preferences/com.superlogical.rex.plist",
+  ]
 end
