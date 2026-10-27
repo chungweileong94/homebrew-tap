@@ -11,8 +11,8 @@ import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 
-FEED = "https://blob.superlogical.com/public/rex-app/preview/appcast.xml"
-PREFIX = "https://blob.superlogical.com/public/rex-app/preview/"
+FEED = "https://blob.superlogical.com/public/rex-app/snapshot/appcast.xml"
+PREFIX = "https://blob.superlogical.com/public/rex-app/snapshot/"
 SPARKLE = "{http://www.andymatuschak.org/xml-namespaces/sparkle}"
 PUBLIC_KEY = "jG2oqfrStpD6pfzWIBAHHbER3yTLaZWToni8eZiBzxE="
 MAX_DMG = 512 * 1024 * 1024
@@ -40,7 +40,7 @@ def validate_url(url):
     parsed = urllib.parse.urlsplit(url)
     if (parsed.scheme != "https" or parsed.netloc != "blob.superlogical.com"
             or parsed.query or parsed.fragment
-            or not re.fullmatch(r"/public/rex-app/preview/(?:appcast\.xml|Rex-[0-9]+\.[0-9]+\.[0-9]+-[0-9]+\.dmg)", parsed.path)):
+            or not re.fullmatch(r"/public/rex-app/snapshot/(?:appcast\.xml|Rex-[0-9]+\.[0-9]+\.[0-9]+-[0-9]+\.dmg)", parsed.path)):
         raise ValueError("Unexpected vendor URL")
     return url
 

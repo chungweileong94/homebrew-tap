@@ -37,13 +37,26 @@ class UpdaterTests(unittest.TestCase):
                 updater.parse_feed(feed(version=version))
 
     def test_rejects_bad_urls(self):
-        for url in ['http://blob.superlogical.com/public/rex-app/preview/appcast.xml',
-                    'https://blob.superlogical.com.evil.test/public/rex-app/preview/appcast.xml',
-                    'https://blob.superlogical.com@evil.test/public/rex-app/preview/appcast.xml',
+        for url in ['http://blob.superlogical.com/public/rex-app/snapshot/appcast.xml',
+                    'https://blob.superlogical.com.evil.test/public/rex-app/snapshot/appcast.xml',
+                    'https://blob.superlogical.com@evil.test/public/rex-app/snapshot/appcast.xml',
                     updater.FEED + '?token=x', updater.FEED + '#x',
-                    'https://blob.superlogical.com/public/rex-app/preview/../evil.dmg']:
+                    'https://blob.superlogical.com/public/rex-app/snapshot/../evil.dmg']:
             with self.subTest(url=url), self.assertRaises(ValueError):
                 updater.validate_url(url)
+
+    def test_snapshot_channel_is_exclusive(self):
+        self.assertEqual(updater.FEED, "https://blob.superlogical.com/public/rex-app/snapshot/appcast.xml")
+        self.assertEqual(updater.validate_url(updater.FEED), updater.FEED)
+        self.assertIn(updater.FEED, CASK)
+        for channel in ["preview", "stable", "snapshot/../preview"]:
+            url = updater.FEED.replace("/snapshot/", f"/{channel}/")
+            with self.subTest(channel=channel), self.assertRaises(ValueError):
+                updater.validate_url(url)
+            with self.assertRaises(ValueError):
+                updater.parse_feed(feed(url=f"https://blob.superlogical.com/public/rex-app/{channel}/Rex-0.1.0-1409.dmg"))
+            with self.assertRaises(ValueError):
+                updater.current_version(CASK.replace("/snapshot/", f"/{channel}/"))
 
     def test_rejects_mismatched_release_url(self):
         with self.assertRaises(ValueError):
