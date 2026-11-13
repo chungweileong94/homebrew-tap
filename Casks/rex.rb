@@ -1,6 +1,6 @@
 cask "rex" do
-  version "0.1.0,1941"
-  sha256 "2e3957b5f18a9233b4eb75331f03d00eec5dfad9a61017c92348b3bb49404d1a"
+  version "0.1.0,1961"
+  sha256 "a2229244ab8433967bed3b2a48f07eb2a458169922ce1ca8a0cbeb1e91ea018f"
 
   url "https://blob.superlogical.com/public/rex-app/snapshot/Rex-#{version.csv.first}-#{version.csv.second}.dmg"
   name "Rex Beta"
