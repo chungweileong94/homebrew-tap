@@ -7,10 +7,10 @@ import urllib.request
 
 API = "https://api.github.com/repos/libracoder/kiri/releases/latest"
 PREFIX = "https://github.com/libracoder/kiri/releases/download/"
-VERSION_LINE = re.compile(r'^  version "([0-9]+(?:\\.[0-9]+){2})"$', re.M)
-ARM_LINE = re.compile(r'(?<=  on_arm do\\n)    sha256 "([0-9a-f]{64})"', re.M)
-INTEL_LINE = re.compile(r'(?<=  on_intel do\\n)    sha256 "([0-9a-f]{64})"', re.M)
-VERSION = re.compile(r'[0-9]+(?:\\.[0-9]+){2}')
+VERSION_LINE = re.compile(r'^  version "([0-9]+(?:\.[0-9]+){2})"$', re.M)
+ARM_LINE = re.compile(r'(?<=  on_arm do\n)    sha256 "([0-9a-f]{64})"', re.M)
+INTEL_LINE = re.compile(r'(?<=  on_intel do\n)    sha256 "([0-9a-f]{64})"', re.M)
+VERSION = re.compile(r'[0-9]+(?:\.[0-9]+){2}')
 DIGEST = re.compile(r'sha256:([0-9a-f]{64})')
 
 
@@ -34,7 +34,7 @@ def parse_release(data):
     if data.get("draft") or data.get("prerelease"):
         raise ValueError("Latest release is draft or prerelease")
     tag = data.get("tag_name", "")
-    if not re.fullmatch(r"v[0-9]+(?:\\.[0-9]+){2}", tag):
+    if not re.fullmatch(r"v[0-9]+(?:\.[0-9]+){2}", tag):
         raise ValueError("Unexpected release tag")
     version = tag[1:]
     assets = {}
