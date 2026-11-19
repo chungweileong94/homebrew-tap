@@ -1,13 +1,13 @@
 cask "kiri" do
   arch arm: "arm64", intel: "x86_64"
 
-  version "0.2.1"
+  version "0.2.2"
 
   on_arm do
-    sha256 "c42c518eb6a4efcb995b52b987b83e848028a020eef5872e0ac16a1c7827fffa"
+    sha256 "0f0ed39fc08f971c33ead60371c9d58768d993a853407e136f63f62a7edc9864"
   end
   on_intel do
-    sha256 "66e5e9f6255ba109e1740078994d8346fbce3c1d7f77075699f3f7f6b9314cff"
+    sha256 "f78299a131d28801bcdfafd4bc0af8737441181d217110ee955ce251691d83d9"
   end
 
   url "https://github.com/libracoder/kiri/releases/download/v#{version}/Kiri-#{version}-#{arch}.dmg"
