@@ -5,7 +5,21 @@ import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 import update_kiri as updater
 
-CASK = (Path(__file__).resolve().parents[1] / "Casks/kiri.rb").read_text()
+# Keep the starting version and hashes fixed as the published cask advances.
+CASK = (
+    'cask "kiri" do\n'
+    '  arch arm: "arm64", intel: "x86_64"\n'
+    '  version "0.2.1"\n'
+    '  on_arm do\n'
+    f'    sha256 "{"c" * 64}"\n'
+    '  end\n'
+    '  on_intel do\n'
+    f'    sha256 "{"d" * 64}"\n'
+    '  end\n'
+    '  url "https://github.com/libracoder/kiri/releases/download/v#{version}/Kiri-#{version}-#{arch}.dmg"\n'
+    '  depends_on macos: :sonoma\n'
+    'end\n'
+)
 
 
 def release(version="0.2.2", digest_arm="a" * 64, digest_intel="b" * 64):
