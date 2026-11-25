@@ -3,7 +3,7 @@ cask "rex" do
   sha256 "f86fab532e5918dc5502094aa239dacdae62b90661ec0823e43153e14970242f"
 
   url "https://blob.superlogical.com/public/rex-app/snapshot/Rex-#{version.csv.first}-#{version.csv.second}.dmg"
-  name "Rex Beta"
+  name "Rex"
   desc "Terminal emulator and multiplexer (snapshot)"
   homepage "https://www.superlogical.com/rex"
 
@@ -15,7 +15,7 @@ cask "rex" do
   auto_updates true
   depends_on macos: :sequoia
 
-  app "Rex Beta.app"
+  app "Rex.app"
 
   zap trash: [
     "~/Library/Application Support/com.superlogical.rex",
